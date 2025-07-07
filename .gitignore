@@ -1,0 +1,43 @@
+# dependencias
+node_modules
+
+# Build
+dist/
+build/
+
+# Arquivos de configuração da IDE
+.vscode/
+
+# Arquivos de Log
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+
+# Pasta de cache do Vite
+.vite
+
+# Arquivos do Sistema
+.DS_Store
+Thumbs.db
+
+dist-ssr
+*.local
+
+# Editor directories and files
+
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
