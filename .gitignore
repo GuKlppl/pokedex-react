@@ -32,9 +32,12 @@ Thumbs.db
 dist-ssr
 *.local
 
-# Editor directories and files
+# Ignorar a pasta config
+/config/
 
-!.vscode/extensions.json
+# Editor directories and files
+.vs/
+.vscode/
 .idea
 *.suo
 *.ntvs*
