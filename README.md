@@ -33,3 +33,8 @@ Uma aplicação interativa e moderna desenvolvida em React para explorar os 151 
    git clone [https://github.com/GuKlppl/pokedex-react.git](https://github.com/GuKlppl/pokedex-react.git)
 
 Desenvolvido com ❤️ por GuKlppl
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007acc.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![Axios](https://img.shields.io/badge/axios-671ddf?style=for-the-badge&logo=axios&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
