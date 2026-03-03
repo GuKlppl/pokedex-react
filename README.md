@@ -31,9 +31,14 @@ Uma aplicação interativa e moderna desenvolvida em React para explorar os 151 
 1. **Clone o repositório:**
    ```bash
    git clone [https://github.com/GuKlppl/pokedex-react.git](https://github.com/GuKlppl/pokedex-react.git)
-
+   
 <hr />
 
+<<<<<<< HEAD
+<hr />
+
+=======
+>>>>>>> 5d90e4238008121c024c4234551259cac5eff910
 <p align="center">
   Desenvolvido com ❤️ por <strong>GuKlppl</strong>
 </p>
