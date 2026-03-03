@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import PokemonCard from "../components/PokemonCard";
+import PokemonCard from "../../components/PokemonCard/PokemonCard";
 
 import type { PokemonListItem } from "../types/Pokemon";
 import { useSearchParams } from "react-router-dom";
+import { getTypeColor } from "../../utils/pokemonUtils";
 
 interface HomeProps {
     isDarkMode: boolean;
     isShiny: boolean;
 }
-function Home({ isDarkMode, isShiny }: HomeProps) {
+function Home({ isDarkMode, isShiny, searchTerm }: HomeProps) {
     const [pokemons, setPokemons] = useState<PokemonListItem[]>([]);
     const [search, setSearch] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
@@ -82,6 +83,7 @@ function Home({ isDarkMode, isShiny }: HomeProps) {
         }
     }, [typeFilter]);
 
+
     const filteredPokemons = useMemo(() => {
         let list = pokemons;
 
@@ -91,10 +93,15 @@ function Home({ isDarkMode, isShiny }: HomeProps) {
         }
 
         return list.filter((pokemon) =>
-            pokemon.name.toLowerCase().includes(search.toLowerCase())
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-    }, [pokemons, search, showOnlyFavorites]);
+    }, [pokemons, searchTerm, showOnlyFavorites]);
 
+    if (loading) return <skeleton />;
+
+    if (filteredPokemons.length === 0 && searchTerm !== "") {
+        return <p>Nenhum pokemon encontrado com "{searchTerm}"</p>;
+    }
 
     return (
         <div style={{
@@ -105,67 +112,8 @@ function Home({ isDarkMode, isShiny }: HomeProps) {
             minHeight: '100vh',
             transition: 'background-color 0.3s ease'
         }}>
-            {/* Header com Personalidade */}
-            <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h1 style={{
-                    fontSize: '2.5rem',
-                    fontWeight: '900',
-                    color: isDarkMode ? "#fff" : "#333",
-                    letterSpacing: '-1.5px',
-                    margin: '20px 0'
-                }}>
-                    Poké<span style={{ color: '#ff4757' }}>Dex</span>
-                </h1>
-            </header>
 
-            <button onClick={() =>
-                setShowOnlyFavorites(!showOnlyFavorites)}
-                style={{
-                    padding: '10px 20px',
-                    borderRadius: '20px',
-                    border: 'none',
-                    backgroundColor: showOnlyFavorites ? '#ff4757' : '#ccc',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    transition: '0.3s',
-                }}>
-                {showOnlyFavorites ? '⭐ Mostrando Favoritos' : '⭐ Ver Favoritos'}
-            </button>
 
-            {/* Container da Busca */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '30px'
-            }}>
-                <div style={{
-                    position: 'relative',
-                    width: '100%',
-                    maxWidth: '500px',
-                }}>
-                    <input
-                        type="text"
-                        placeholder="Pesquisar Pokémon..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        style={{
-                            width: "100%",
-                            padding: '16px 25px',
-                            borderRadius: '30px',
-                            border: 'none',
-                            backgroundColor: isDarkMode ? '#2a2a2a' : '#ffffff',
-                            boxShadow: isDarkMode ? '0 10px 20px rgba(0,0,0,0.3)' : '0 10px 25px rgba(0,0,0,0.05)',
-                            fontSize: '1rem',
-                            color: isDarkMode ? '#fff' : '#333',
-                            outline: 'none',
-                            transition: 'all 0.3s ease'
-                        }}
-                        onFocus={(e) => e.target.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)'}
-                        onBlur={(e) => e.target.style.boxShadow = '0 10px 25px rgba(0,0,0,0.08)'}
-                    />
-                </div>
-            </div>
 
             {/* Informações de Filtro e Contador */}
             <div style={{ maxWidth: '1200px', margin: '0 auto 20px auto', width: '100%' }}>
@@ -257,14 +205,6 @@ function Home({ isDarkMode, isShiny }: HomeProps) {
                 )};
             </div>
 
-            {/* Mensagem de Erro (Busca Vazia) */}
-            {filteredPokemons.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '100px 20px', opacity: 0.5 }}>
-                    <span style={{ fontSize: '3rem' }}>🔍</span>
-                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Nenhum Pokémon encontrado com "{search}"</p>
-                </div>
-            )}
-
             {/* Botão Voltar ao Topo */}
             {showTopBtn && (
                 <button
@@ -294,77 +234,77 @@ function Home({ isDarkMode, isShiny }: HomeProps) {
                     ↑
                 </button>
             )}
+
+            {/* Mensagem de Erro (Busca Vazia) */}
+            {filteredPokemons.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '100px 20px', opacity: 0.5 }}>
+                    <span style={{ fontSize: '3rem' }}>🔍</span>
+                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Nenhum Pokémon encontrado com "{search}"</p>
+                </div>
+            )}
+
         </div>
     );
 }
-const getTypeColor = (type: string) => {
-    const colors: { [key: string]: string } = {
-        fire: "#F08030", water: "#6890F0", grass: "#78C850", electric: "#F8D030",
-        ice: "#98D8D8", fighting: "#C03028", poison: "#A040A0", ground: "#E0C068",
-        flying: "#A890F0", psychic: "#F85888", bug: "#A8B820", rock: "#B8A038",
-        ghost: "#705898", dragon: "#7038F8", dark: "#705848", steel: "#B8B8D0",
-        fairy: "#EE99AC", normal: "#A8A878",
-    };
-    return colors[type.toLowerCase()] || "#777";
-};
+
 
 
 
 const styles = {
-  container: {
-    padding: "2rem",
-    fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    maxWidth: "1200px",
-    margin: "0 auto",
-  },
-  title: {
-    textAlign: "center" as const,
-    fontSize: "2.5rem",
-    marginBottom: "1.5rem",
-    color: "#333",
-  },
-  searchContainer: {
-      display: "flex",
-      justifyContent: "center",
-      marginBottom: "2rem",
-  },
-  searchInput: {
-      padding: "0.8rem 1.5rem",
-      width: "100%",
-      maxWidth: "500px",
-      border: "2px solid #ddd",
-      fontSize: "1rem",
-      outline: "none",
-      boxShadow:"0 4px 6px rgba(0,0,0,0.05)",
-  },
-  filterHeader: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "15px",
-    backgroundColor: "#f8f9fa",
-    padding: "1rem",
-    borderRadius: "12px",
-    marginBottom: "2rem",
-    border: "1px solid #eee",
-  },
-  clearButton: {
-    padding: "8px 16px",
-    cursor: "pointer",
-    borderRadius: "20px",
-    border: "none",
-    backgroundColor: "#ff4444",
-    color: "white",
-    fontWeight: "bold" as const,
-    fontSize: "0.8rem",
-    transition: "background-color 0.2s",
-  },
-  grid: {
+    container: {
+        padding: "2rem",
+        fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        maxWidth: "1200px",
+        margin: "0 auto",
+    },
+    title: {
+        textAlign: "center" as const,
+        fontSize: "2.5rem",
+        marginBottom: "1.5rem",
+        color: "#333",
+    },
+    searchContainer: {
+        display: "flex",
+        justifyContent: "center",
+        marginBottom: "2rem",
+    },
+    searchInput: {
+          padding: "0.8rem 1.5rem",
+         width: "100%",
+         maxWidth: "500px",
+        border: "2px solid #ddd",
+        fontSize: "1rem",
+        outline: "none",
+        boxShadow:"0 4px 6px rgba(0,0,0,0.05)",
+    },
+    filterHeader: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "15px",
+        backgroundColor: "#f8f9fa",
+        padding: "1rem",
+        borderRadius: "12px",
+        marginBottom: "2rem",
+        border: "1px solid #eee",
+    },
+     clearButton: {
+       padding: "8px 16px",
+       cursor: "pointer",
+       borderRadius: "20px",
+      border: "none",
+       backgroundColor: "#ff4444",
+      color: "white",
+      fontWeight: "bold" as const,
+      fontSize: "0.8rem",
+      transition: "background-color 0.2s",
+    },
+    grid: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
       gap: "1.5rem",
       padding: "10px"
-  },
+    },
 };
 
 export default Home;

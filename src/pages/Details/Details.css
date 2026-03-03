@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+.details-page-wrapper {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 90px);
+    animation: fadeIn 0.5s ease;
+}
+ /*Card Principal*/
+.details-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1600px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 30px;
+    padding: 40px;
+    gap: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Colunas do Dashboard */
+.details-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Coluna 1: Identidade */
+.identity-column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    padding-top: 60px;
+
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.pokemon-id-bg {
+    position: absolute;
+    top: 20px;
+    left: 53%;
+    transform: translateX(-50%);
+    font-family: 'Michroma', sans-serif; /* Fonte quadrada sugerida */
+    font-size: 8.6rem; /* Bem grande mesmo! */
+    font-weight: 900;
+    /* O SEGREDO: Cor clara e transparente */
+    color: rgba(255, 255, 255, 0.07);
+    /* Faz o número não interferir nos cliques dos botões */
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+}
+.identity-content {
+    position: relative;
+    z-index: 1; /* Garante que o nome e a foto fiquem NA FRENTE do ID */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.name-row h1 {
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    margin: 0;
+    color: #fff;
+    /* Um leve contorno ou sombra ajuda a destacar do fundo */
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+.name-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaço entre o nome e o ícone de som */
+}
+.cry-button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+    .cry-button:hover {
+        background: #ffcb05; /* Amarelo Pokémon */
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 203, 5, 0.5);
+    }
+    .cry-button:active {
+        transform: scale(0.9);
+    }
+.pokemon-image {
+    width: 230px;
+    height: 230px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    filter: drop-shadow(0 3px 9px rgba(0,0,0,0.4));
+    transition: transform 1s cubic-bezier(0.1, 0.2, 0.12, 0.1);
+}
+
+.identity-column .pokemon-image:hover {
+    transform: scale(1.15) translateY(-10px);
+}
+
+.identity-column h1 {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.8rem;
+    text-transform: capitalize;
+    margin: 15px 0;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.pokemon-id {
+    font-size: 1.4rem;
+    opacity: 0.6;
+    font-weight: 900;
+    background: rgba(255, 255, 255, 0.1);
+    padding: p15px;
+    border-radius: 20px;
+}
+
+
+.shiny-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+    .shiny-toggle:hover {
+        background: #ffcb05;
+        color: #333;
+        border-color: #ffcb05;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 203, 5, 0.3);
+    }
+
+.info-section {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/*---- FRAQUEZAS ----*/
+.weakness-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+    .weakness-section h4 {
+        font-size: 1.64rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+.weakness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 300px;
+}
+weakness-grid .type-badge {
+    padding: 6px 14px;
+    border-radius: 8px;
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    text-transform: capitalize;
+    cursor: pointer;
+    border: none; 
+}
+.weakness-badge-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    width: 100%;
+    min-width: 90px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+    .weakness-badge-wrapper:hover {
+        transform: scale(1.05);
+    }
+
+.type-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    text-transform: capitalize;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.multiplier {
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+/* Coluna 2: Status (Barras) */
+.stats-column {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border-radius: 20px;
+    justify-content: center;
+}
+
+.stats-column h3 {
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #ffcb05;
+}
+
+.stat-item {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.stat-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.stat-bar-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    width: 0;
+    animation: fillBar 0.8s cubic-bezier(0.1, 0.5, 0.2, 1) forwards;
+    position: relative;
+}
+stat-bar-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 90deg, transparent, rgba(255, 255, 255, 0.2), transparent );
+    animation: shine-bar 3s infinite;
+}
+@keyframes shine-bar {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+@keyframes fillBar {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: var(--target-width);
+    }
+}
+/* Coluna 3: Evoluções */
+
+.evolution-display {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.evo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .evo-item:hover {
+        transform: scale(1.1);
+    }
+
+    .evo-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        image-rendering: pixelated;
+    }
+
+    .evo-item span {
+        text-transform: capitalize;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }

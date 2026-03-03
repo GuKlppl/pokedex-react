@@ -46,8 +46,8 @@ function PokemonCard({ name, url, isDarkMode }: PokemonCardProps) {
                 </p>
             </div>
         </Link>
-    );
-}
+    )
+};
 
 const styles = {
     card: {
