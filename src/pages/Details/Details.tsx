@@ -232,7 +232,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
 
                 {/* COLUNA 1: IDENTIDADE */}
                 <div className="details-column identity-column">
-
+                    {/*-- BOTÕES --*/}
                     <div className="buttons-container">
                         <button
                             onClick={() => setIsShiny(!isShiny)}
@@ -245,7 +245,8 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                             🕹️ Retro
                         </button>
                     </div>
-                    
+
+                    {/*-- ID --*/}
                     <span className="pokemon-id-bg"
                         style={{
                             background: `linear-gradient(to bottom, ${typeColor}22 15%, transparent 90%)`,
@@ -254,6 +255,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                         }}
                     >#{formattedId}</span>
 
+                    {/*-- NOME E CRY --*/}
                     <div className="identity-content"> 
                         <div className="name-row">
                             <h1>{pokemon.name}</h1>
@@ -268,72 +270,116 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                         />
 
                     </div>
-                    
+
+                    {/*-- ALTURA E PESO --*/}
+                    <div className="dimensions-row">
+                        <div className="dimension-item">
+                            <span className="label">Altura</span>
+                            <span className="value">{pokemon.height / 10} m</span>
+                        </div>
+                        <div className="dimension-item">
+                            <span className="label">Peso</span>
+                            <span className="value">{pokemon.weight / 10} kg</span>
+                        </div>
+                    </div>
+
+                    {/*-- TIPOS -- */}
+                    <div className="types-section">
+                        <h4>Tipos</h4>
+                        <div className="types-row">
+                            {pokemon.types.map((t: any) => (
+                                <span
+                                    key={t.type.name}
+                                    className={`main-type-badge ${t.type.name}`}
+                                    onClick={() => handleTypeClick(t.type.name)}
+                                    style={{
+                                        backgroundColor: getTypeColor(t.type.name),
+                                        boxShadow: `0 0 15px ${getTypeColor(t.type.name)}55`
+                                    }}
+                                >
+                                    {t.type.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
                         {/* Fraquezas */}
-                        <div className="weakness-section">
-                            <h4>Fraquezas</h4>
-                            <div className="weakness-grid">
-                                {weaknesses && Object.keys(weaknesses).length > 0 ? (
-                                    Object.entries(weaknesses).map(([type, multiplier]: [string, any]) => (
-                                        <div key={type} className="weakness-badge-wrapper" style={{backgroundColor: getTypeColor(type)} }>
-                                            <span className={`type-name ${type}`}
-                                                onClick={() => handleTypeClick(type)}
-                                                style={{
-                                                    backgroundColor: getTypeColor(type),
-                                                    boxShadow: `0 4px 10px ${getTypeColor(type)}44`,
-                                                } }
+                    <div className="weakness-section">
+                        <h4>Fraquezas</h4>
+                        <div className="weakness-grid">
+                            {weaknesses && Object.keys(weaknesses).length > 0 ? (
+                                Object.entries(weaknesses).map(([type, multiplier]: [string, any]) => (
+                                    <div key={type} className="weakness-badge-wrapper" style={{backgroundColor: getTypeColor(type)} }>
+                                        <span className={`type-name ${type}`}
+                                            onClick={() => handleTypeClick(type)}
+                                            style={{
+                                                backgroundColor: getTypeColor(type),
+                                                boxShadow: `0 4px 10px ${getTypeColor(type)}44`,
+                                                }}
                                             >
-                                                {type}
-                                            </span>
-                                            <span className="multiplier" onClick={()=> handleTypeClick(type)}>{multiplier}x</span>
+                                            {type}
+                                        </span>
+                                        <span className="multiplier" onClick={()=> handleTypeClick(type)}>{multiplier}x</span>
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="no-weaknesses-text">No major weaknesses</p>
+                                <p className="no-weaknesses-text">Sem fraquezas</p>
                                 )}
                             </div>
                         </div>
                 </div>
 
                 {/* STATUS */}
-                <div className="details-column stats-column">
-                    <h3>Base Stats</h3>
-                    {pokemon.stats.map((s: any) => (
-                        <div key={s.stat.name} className="stat-item">
-                            <div className="stat-info">
-                                <span>{formatStatName(s.stat.name)}</span>
-                                <span>{s.base_stat}</span>
-                            </div>
-                            <div className="stat-bar-container">
-                                <div
-                                    className="stat-bar-fill"
-                                    style={{
-                                        "--target-width": `${Math.min((s.base_stat / 150) * 100, 100)}%`,
-                                        backgroundColor: getStatColor(s.stat.name),
-                                        boxShadow: `0 0 12px ${getStatColor(s.stat.name)}66`
-                                    } as React.CSSProperties}
-                                ></div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <div className="details-column stats-evolution-column">
 
-                {/* EVOLUÇÃO */}
-                <div className="details-column evolution-column">
-                    <h3>Evoluções</h3>
-                    <div className="evolution-display">
-                        {evolutions.map((evo: any) => (
-                            <div key={evo.id} className="evo-item" onClick={() => navigate(`/pokemon/${evo.name}`)}>
-                                <img
-                                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${evo.id}.gif`}
-                                    alt={evo.name}
-                                    onError={(e: any) => e.target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
-                                />
-                                <span>{evo.name}</span>
+                    {/*-- EVOLUÇÃO -- */}
+                    <div className="evolution-section">
+                        <h3>Evoluções</h3>
+                        <div className="evolution-display-horizontal">
+                            {evolutions.map((evo: any, index: number) => (
+                                <div key={evo.id} className="evo-wrapper">
+                                    <div className="evo-item" onClick={() => navigate(`/pokemon/${evo.name}`)}>
+                                        <img
+                                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${evo.id}.gif`}
+                                            alt={evo.name}
+                                            onError={(e: any) => e.target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
+                                        />
+                                        <span>{evo.name}</span>
+                                    </div>
+       
+                                    {index < evolutions.length - 1 && <span className="evo-arrow">➜</span>}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/*-- STATUS --*/}
+
+                    <div className="stats-container-wrapper">
+                        <h3>Base Stats</h3>
+                        {pokemon.stats.map((s: any) => (
+                            <div key={s.stat.name} className="stat-item">
+                                <div className="stat-info">
+                                    <span>{formatStatName(s.stat.name)}</span>
+                                    <span>{s.base_stat}</span>
+                                </div>
+                                <div className="stat-bar-container">
+                                    <div
+                                        className="stat-bar-fill"
+                                        style={{
+                                            "--target-width": `${Math.min((s.base_stat / 255) * 100, 100)}%`,
+                                            backgroundColor: getStatColor(s.stat.name),
+                                            boxShadow: `0 0 12px ${getStatColor(s.stat.name)}66`
+                                        } as React.CSSProperties}
+                                    ></div>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
+
+                
+                
             </div>
         </div>
     );
