@@ -21,8 +21,8 @@ const SkeletonBlock = ({ width, height, borderRadius = "8px", margin = "0", styl
             height,
             borderRadius,
             margin,
-            backgroundColor: "currentColor", // Ele vai herdar a cor do pai
-            opacity: 0.1, // Damos a cor aqui
+            backgroundColor: "currentColor",
+            opacity: 0.1,
             ...style
         }}
     />
@@ -84,20 +84,7 @@ const DetailsSkeleton = ({ isDarkMode }: { isDarkMode: boolean }) => {
     )
 }
 
-function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
-    //Hooks
-    const { name } = useParams<{ name: string }>();
-    const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
-    const [viewMode, setViewMode] = useState<'modern' | 'legacy'>('modern');
-    const [evolutions, setEvolutions] = useState<{ name: string, id: string }[]>([]);
-    const [weaknesses, setWeaknesses] = useState<{ [key: string]: number }>({});
-    const [loading, setLoading] = useState(true);
-    const [isFavorite, setIsFavorite] = useState(false);
-    const navigate = useNavigate();
-
-
-    //Funções de Lógica 
-    const playCry = () => {
+const playCry = () => {
         if (pokemon && pokemon.cries) {
             const audio = new Audio(pokemon.cries.latest);
             audio.volume = 0.05;
@@ -105,14 +92,88 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
         }
     };
 
-    const navigateToPokemon = (newId: number) => {
+const navigateToPokemon = (newId: number) => {
         if (newId > 0) {
             navigate(`/pokemon/${newId}`);
         }
     }
 
-    const currentId = pokemon?.id || 0;
+function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
+    const { name } = useParams<{ name: string }>();
+    const navigate = useNavigate();
 
+    const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
+    const [isLegacy, setIsLegacy] = useState(false);
+    const [evolutions, setEvolutions] = useState<{ name: string, id: string }[]>([]);
+    const [weaknesses, setWeaknesses] = useState<{ [key: string]: number }>({});
+    const [loading, setLoading] = useState(true);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    //API
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                if (!isMounted) return;
+
+                setPokemon(res.data);
+
+                //Busca fraquezas
+                const finalWeaknesses = await getPokemonWeaknesses(res.data.types);
+                setWeaknesses(finalWeaknesses);
+
+                // Busca Espécie para pegar a Evolução
+                const speciesRes = await axios.get(res.data.species.url);
+                const evoRes = await axios.get(speciesRes.data.evolution_chain.url);
+
+                //Lógica simples para pegar nomes das evoluções
+                const evoData = [];
+                let currentEvo = evoRes.data.chain;
+                while (currentEvo) {
+                    const id = currentEvo.species.url.split('/').filter(Boolean).pop();
+                    evoData.push({ name: currentEvo.species.name, id: id || "" });
+                    currentEvo = currentEvo.evolves_to[0];
+                }
+                setEvolutions(evoData);
+
+                setLoading(false);
+            } catch (err) {
+                console.error("Erro na busca:", err);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+        return () => { isMounted = false; };
+    }, [name]);
+
+    //Verificações de Renderização
+    if (loading) return <DetailsSkeleton isDarkMode={isDarkMode} />;
+    if (!pokemon) return <div className="loading-screen">Pokémon não encontrado</div>;
+
+    //Funções de Lógica 
+    const currentId = pokemon?.id;
+    const typeColor = getTypeColor(pokemon.types[0].type.name);  
+    const formattedId = String(currentId).padStart(3, '0');
+
+
+
+
+
+    const getPokemonImage = () => {
+        if (isLegacy) {
+            const crystal = pokemon.sprites.versions['generation-ii'].crystal;
+            if (crystal) {
+                return (isShiny ? crystal.front_shiny_transparent : crystal.front_transparent) || pokemon.sprites.front_default;
+            }
+        }
+
+        const animated = pokemon.sprites.versions?.['generation-v']?.['black-white']?.animated;
+        return (isShiny ? animated?.front_shiny : animated?.front_default) || pokemon.sprites.other?.['official-artwork']?.front_default;
+    }
     const handleToggleShiny = () => {
         const nextShiny = !isShiny;
         setIsShiny(nextShiny);
@@ -131,14 +192,13 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
             navigate(`/pokemon/${currentId + 1}`);
         }
     };
-
     const handlePrev = () => {
         if (currentId <= 1) {
             navigate(`/pokemon/151`);
         } else {
             navigate(`/pokemon/${currentId - 1}`);
         }
-    }
+    };
 
     const toggleFavorite = () => {
         let favorites = JSON.parse(localStorage.getItem("pokedex_favorites") || "[]");
@@ -152,45 +212,19 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
         }
 
         localStorage.setItem("pokedex_favorites", JSON.stringify(favorites));
-    }
+    };
 
-    useEffect(() => {
-        const favorites = JSON.parse(localStorage.getItem("pokedex_favorites") || "[]");
-        setIsFavorite(favorites.includes(name));
-    }, [name])
+  
 
-    useEffect(() => {
-        setLoading(true);
-        window.scrollTo(0, 0);
 
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-            .then(async (res) => {
-                setPokemon(res.data);
+    //Favoritos
+    //useEffect(() => {
+    //    const favorites = JSON.parse(localStorage.getItem("pokedex_favorites") || "[]");
+    //    setIsFavorite(favorites.includes(name));
+    //}, [name])
 
-                const finalWeaknesses = await getPokemonWeaknesses(res.data.types);
-                setWeaknesses(finalWeaknesses);
 
-                return axios.get(res.data.species.url);
-            })
-            .then((speciesRes) => axios.get(speciesRes.data.evolution_chain.url))
-            .then((evoRes) => {
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, [name]);
 
-    //Verificações de Renderização
-    if (loading) return <DetailsSkeleton isDarkMode={isDarkMode} />;
-    if (!pokemon) return <p style={styles.error}>Pokemon Não Encontrado...</p>;
-
-        
-
-    const legacySprite = isShiny
-        ? pokemon.sprites.versions?.["generation-iii"]?.["firered-leafgreen"]?.front_shiny
-        : pokemon.sprites.versions?.["generation-iii"]?.["firered-leafgreen"]?.front_default;
 
     return (
         <div className="details-page-wrapper">
@@ -198,35 +232,43 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
 
                 {/* COLUNA 1: IDENTIDADE */}
                 <div className="details-column identity-column">
-                    <button onClick={() => setIsShiny(!isShiny)} className="shiny-toggle-corner">
-                        {isShiny ? "✨ Shiny" : "✨ Normal"}
-                    </button>
 
+                    <div className="buttons-container">
+                        <button
+                            onClick={() => setIsShiny(!isShiny)}
+                            className={`toggle-btn ${isShiny ? 'active' : ''}`}
+                        >
+                            ✨ {isShiny ? "Shiny" : "Normal"}
+                        </button>
+                        <button onClick={() => setIsLegacy(!isLegacy)}
+                            className={`toggle-btn ${isLegacy ? 'active' : ''}`}>
+                            🕹️ Retro
+                        </button>
+                    </div>
+                    
                     <span className="pokemon-id-bg"
-                        style={{color: `${getTypeColor(pokemon.types[0].type.name)}66`} }
-                    >#{pokemon.id}</span>
+                        style={{
+                            background: `linear-gradient(to bottom, ${typeColor}22 15%, transparent 90%)`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
+                    >#{formattedId}</span>
 
                     <div className="identity-content"> 
                         <div className="name-row">
                             <h1>{pokemon.name}</h1>
-                            {/* Botão de Cry aqui */}
                             <button onClick={playCry} className="cry-button" title="Ouça o som">
                                 🔊
                             </button>
                         </div>
                         <img
                             className="pokemon-image"
-                            src={isShiny
-                                ? pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated?.front_shiny || pokemon.sprites.front_shiny
-                                : pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated?.front_default || pokemon.sprites.front_default
-                            }
+                            src={getPokemonImage()}
                             alt={pokemon.name}
                         />
 
                     </div>
                     
-
-
                         {/* Fraquezas */}
                         <div className="weakness-section">
                             <h4>Fraquezas</h4>
@@ -253,7 +295,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                         </div>
                 </div>
 
-                {/* COLUNA 2: STATUS */}
+                {/* STATUS */}
                 <div className="details-column stats-column">
                     <h3>Base Stats</h3>
                     {pokemon.stats.map((s: any) => (
@@ -276,9 +318,9 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                     ))}
                 </div>
 
-                {/* COLUNA 3: EVOLUÇÃO */}
+                {/* EVOLUÇÃO */}
                 <div className="details-column evolution-column">
-                    <h3>Evolution Chain</h3>
+                    <h3>Evoluções</h3>
                     <div className="evolution-display">
                         {evolutions.map((evo: any) => (
                             <div key={evo.id} className="evo-item" onClick={() => navigate(`/pokemon/${evo.name}`)}>

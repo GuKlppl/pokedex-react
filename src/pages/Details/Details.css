@@ -22,7 +22,7 @@
     color: white;
 }
 
-/* Colunas do Dashboard */
+/*Identidade */
 .details-column {
     flex: 1;
     display: flex;
@@ -31,7 +31,6 @@
     transition: all 0.3s ease;
 }
 
-/* Coluna 1: Identidade */
 .identity-column {
     position: relative;
     display: flex;
@@ -45,65 +44,35 @@
     position: relative;
     overflow: hidden;
 }
-.pokemon-id-bg {
-    position: absolute;
-    top: 20px;
-    left: 53%;
-    transform: translateX(-50%);
-    font-family: 'Michroma', sans-serif; /* Fonte quadrada sugerida */
-    font-size: 8.6rem; /* Bem grande mesmo! */
-    font-weight: 900;
-    /* O SEGREDO: Cor clara e transparente */
-    color: rgba(255, 255, 255, 0.07);
-    /* Faz o número não interferir nos cliques dos botões */
-    pointer-events: none;
-    z-index: 0;
-    line-height: 1;
-}
+
 .identity-content {
     position: relative;
-    z-index: 1; /* Garante que o nome e a foto fiquem NA FRENTE do ID */
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.name-row h1 {
-    font-size: 2.5rem;
-    text-transform: capitalize;
-    margin: 0;
-    color: #fff;
-    /* Um leve contorno ou sombra ajuda a destacar do fundo */
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-}
-.name-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px; /* Espaço entre o nome e o ícone de som */
-}
-.cry-button {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.2s ease;
-    padding: 0;
+
+/*-- ID -- */
+.pokemon-id-bg {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Michroma', sans-serif;
+    font-size: 7.8rem;
+    font-weight: 900;
+    letter-spacing: -5px;
+    color: rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+    z-index: 0;
     line-height: 1;
+    background: linear-gradient( to bottom, rgba(255, 255, 255, 0.12)20%, rgba(255, 255, 255, 0)90% );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
-    .cry-button:hover {
-        background: #ffcb05; /* Amarelo Pokémon */
-        transform: scale(1.1);
-        box-shadow: 0 0 15px rgba(255, 203, 5, 0.5);
-    }
-    .cry-button:active {
-        transform: scale(0.9);
-    }
+
+/*-- IMG --*/
 .pokemon-image {
     width: 230px;
     height: 230px;
@@ -111,65 +80,102 @@
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     filter: drop-shadow(0 3px 9px rgba(0,0,0,0.4));
-    transition: transform 1s cubic-bezier(0.1, 0.2, 0.12, 0.1);
+    transition: transform 1s cubic-bezier(0.1, 0.2, 0.1, 0.1);
 }
-
 .identity-column .pokemon-image:hover {
-    transform: scale(1.15) translateY(-10px);
+    transform: scale(1.1);
 }
 
-.identity-column h1 {
-    font-family: 'Arial Black', sans-serif;
-    font-size: 2.8rem;
-    text-transform: capitalize;
-    margin: 15px 0;
+/*-- NOME POKE --*/
+.name-row h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 2px;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin: 0;
+    color: "#fff";
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 2;
 }
-
-.pokemon-id {
-    font-size: 1.4rem;
-    opacity: 0.6;
-    font-weight: 900;
-    background: rgba(255, 255, 255, 0.1);
-    padding: p15px;
-    border-radius: 20px;
+.name-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
-
-
-.shiny-toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 6px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
+.cry-button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: 0.3s;
-    z-index: 10;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
 }
-
-    .shiny-toggle:hover {
+    .cry-button:hover {
         background: #ffcb05;
-        color: #333;
-        border-color: #ffcb05;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(255, 203, 5, 0.3);
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 203, 5, 0.5);
+    }
+    .cry-button:active {
+        transform: scale(0.9);
     }
 
-.info-section {
+/*-- Botão Shiny e Legacy --*/ 
+.buttons-container{
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+.toggle-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 15px;
+    border-radius: 20px;
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+    .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    .toggle-btn.active {
+        background: #ffcb05;
+        color: #1a1a1a;
+        border-color: #ffcb05;
+        box-shadow: 0 0 15px rgba(255, 203, 5, 0.4);
+    }
+
+.pokemon-image.legacy-pixel{
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+
+    transform: scale(2.8);
+    margin: 40px 0;
+
+    filter: drop-shadow(5px 5px 0 rgba(0,0,0,,0.2));
+}
+
+/*.info-section {
     width: 100%;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-}
+}*/
 
 /*---- FRAQUEZAS ----*/
 .weakness-section {
@@ -240,19 +246,18 @@ weakness-grid .type-badge {
     border-radius: 4px;
 }
 
-/* Coluna 2: Status (Barras) */
+/* -- Status -- */
 .stats-column {
     background: rgba(0, 0, 0, 0.2);
     padding: 25px;
     border-radius: 20px;
     justify-content: center;
 }
-
 .stats-column h3 {
         margin-bottom: 20px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        color: #ffcb05;
+        color: #fff;
 }
 
 .stat-item {
@@ -299,7 +304,6 @@ stat-bar-fill::after {
     0% {
         transform: translateX(-100%);
     }
-
     100% {
         transform: translateX(100%);
     }
@@ -308,13 +312,12 @@ stat-bar-fill::after {
     from {
         width: 0;
     }
-
     to {
         width: var(--target-width);
     }
 }
-/* Coluna 3: Evoluções */
 
+/* Coluna 3: Evoluções */
 .evolution-display {
     display: flex;
     flex-direction: column;
