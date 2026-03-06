@@ -1,26 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+
+/*:root {*/
+    /* Fundo do Card - Modo Claro (Padrão) */
+    /*--card-bg-inner: #ffffff;*/ /* Branco puro no foco */
+    /*--card-bg-outer: #f2f2f7;*/ /* Cinza "iOS" bem suave nas bordas */
+    /* Textos e Elementos */
+    /*--text-main: #1c1c1e;*/ /* Quase preto para leitura perfeita */
+    /*--text-secondary: rgba(0, 0, 0, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.08);*/ /* Borda sutil escura */
+    /*--shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+    --card-bg-inner: #1a1a1a;
+    --card-bg-outer: #050505;
+    --text-main: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}*/
+
+
+
 .details-page-wrapper {
-    background: radial-gradient(circle at top left, #1a1a1a, #050505);
-    padding: 0;
+    position: fixed;
+    height: calc(100vh - 80px);
+    width: 100vw;
+    top: 80px;
+    left: 0;
+    overflow: hidden;
     display: flex;
+    align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 90px);
-    animation: fadeIn 0.5s ease;
+    box-sizing: border-box;
+
+    z-index: 1000;
 }
  /*Card Principal*/
 .details-card {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 1600px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
+    width: 95%;
+    max-width: 1500px; /* Ou o tamanho máximo que você definiu */
+    height: 85vh;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+    background: radial-gradient(circle at top left, #1a1a1a, #050505);
+    backdrop-filter: blur(20px);
     border-radius: 30px;
-    padding: 40px;
-    gap: 40px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 /*Identidade */
@@ -37,18 +66,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
-
     padding-top: 60px;
-
-    height: 100%;
-    position: relative;
-    overflow: hidden;
 }
 
+/* BLOCO NOME E IMAGE */
 .identity-content {
-    position: relative;
-    z-index: 1;
+    margin-top: 75px; /* Ajuste este valor para descer mais ou menos */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,11 +80,11 @@
 /*-- ID -- */
 .pokemon-id-bg {
     position: absolute;
-    top: 20px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Michroma', sans-serif;
-    font-size: 7.8rem;
+    font-size: 8rem;
     font-weight: 900;
     letter-spacing: -5px;
     color: rgba(255, 255, 255, 0.07);
@@ -82,12 +105,23 @@
     image-rendering: -moz-crisp-edges;
     filter: drop-shadow(0 3px 9px rgba(0,0,0,0.4));
     transition: transform 1s cubic-bezier(0.1, 0.2, 0.1, 0.1);
+    margin-bottom: 25px;
 }
-.identity-column .pokemon-image:hover {
-    transform: scale(1.1);
-}
+    .pokemon-image.legacy-pixel {
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        transform: scale(2.8);
+        margin: 40px 0;
+        filter: drop-shadow(5px 5px 0 rgba(0,0,0,,0.2));
+    }
 
 /*-- NOME POKE --*/
+.name-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 .name-row h1 {
     font-family: 'Rajdhani', sans-serif;
     font-size: 3rem;
@@ -95,15 +129,8 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin: 0;
-    color: "#fff";
     text-shadow: 0 4px 15px rgba(0,0,0,0.3);
     z-index: 2;
-}
-.name-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
 }
 .cry-button {
     background: rgba(255, 255, 255, 0.15);
@@ -129,12 +156,15 @@
         transform: scale(0.9);
     }
 
-/*-- Botão Shiny e Legacy --*/ 
-.buttons-container{
+/*-- Botão Shiny e Legacy --*/
+.buttons-container {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     gap: 10px;
-    z-index: 10;
-    margin-bottom: 20px;
+    z-index: 100;
 }
 .toggle-btn {
     background: rgba(255, 255, 255, 0.1);
@@ -159,58 +189,41 @@
         box-shadow: 0 0 15px rgba(255, 203, 5, 0.4);
     }
 
-.pokemon-image.legacy-pixel{
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
 
-    transform: scale(2.8);
-    margin: 40px 0;
-
-    filter: drop-shadow(5px 5px 0 rgba(0,0,0,,0.2));
-}
 
 /*-- Altura e Peso --*/
 .dimensions-row {
+    margin-top: 25px; 
+    margin-bottom: 15px;
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin: 15px 0;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(5px);
+    gap: 40px; 
+    padding: 0; 
+    background: transparent; 
+    backdrop-filter: none; 
 }
 .dimension-item {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row; /* Mudado para linha para ocupar menos espaço vertical */
+    align-items: baseline;
+    gap: 8px; /* Espaço entre a palavra 'Altura' e o valor '1.0m' */
+    opacity: 0.8; /* Deixa o conjunto levemente mais discreto */
 }
     .dimension-item .label {
-        font-size: 0.7rem;
+        font-size: 0.65rem; /* Fonte ainda menor */
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.5);
         letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.5); /* Cinza suave */
         font-family: 'Rajdhani', sans-serif;
     }
-
     .dimension-item .value {
-        font-size: 1.1rem;
+        font-size: 1.1rem; /* Valor menor para não gritar no layout */
         font-weight: 700;
         color: #fff;
         font-family: 'Rajdhani', sans-serif;
     }
 
 /*-- TIPOS -- */
-.dimensions-row {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin: 12px 0;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    backdrop-filter: blur(5px);
-}
 .types-section h4 {
     font-family: 'Rajdhani', sans-serif;
     font-size: 1.40rem;
@@ -220,26 +233,6 @@
     margin-bottom: 9px;
     text-align: center;
 }
-.dimension-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-    .dimension-item .label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.5);
-        letter-spacing: 1px;
-        font-family: 'Rajdhani', sans-serif;
-    }
-
-    .dimension-item .value {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #fff;
-        font-family: 'Rajdhani', sans-serif;
-    }
 .types-row{
     display: flex;
     justify-content: center;
@@ -250,6 +243,7 @@
 .main-type-badge {
     padding: 8px 25px;
     border-radius: 12px;
+    font-size: 1rem;
     color: white;
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
@@ -258,6 +252,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
     .main-type-badge:hover {
         transform: translateY(-3px) scale(1.05);
@@ -347,14 +342,16 @@ weakness-grid .type-badge {
 }
 .evolution-section,
 .stats-container-wrapper {
-    background: rgba(255, 255, 255, 0.05); /* Branco bem transparente */
-    backdrop-filter: blur(12px); /* O "borrão" que dá o efeito de vidro */
-    -webkit-backdrop-filter: blur(12px); /* Suporte para Safari */
-    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 25px;
     padding: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Borda fina para dar reflexo */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Sombra para profundidade */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     transition: transform 0.3s ease, border 0.3s ease;
+
+    text-align: center;
 }
     .evolution-section:hover,
     .stats-container-wrapper:hover {
@@ -362,7 +359,7 @@ weakness-grid .type-badge {
         transform: translateY(-2px);
     }
 .evolution-display-horizontal {
-    background: transparent; /* Remove o fundo antigo para o vidro brilhar */
+    background: transparent;
     padding: 10px 0;
 }
     .stats-container-wrapper h3 {
@@ -373,9 +370,8 @@ weakness-grid .type-badge {
         letter-spacing: 2px;
         margin-bottom: 20px;
         color: rgba(255, 255, 255, 0.9);
-        /* Se quiser manter o detalhe amarelo, centralize-o também: */
         border-bottom: 2px solid #ffcb05;
-        display: inline-block; /* Faz a borda ter o tamanho do texto */
+        display: inline-block; 
         width: auto;
         margin-left: auto;
         margin-right: auto;
@@ -385,11 +381,11 @@ weakness-grid .type-badge {
 .stat-item {
     width: 100%;
     margin-bottom: 20px;
+    text-align: left;
 }
 .stat-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
     font-size: 0.9rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -464,7 +460,6 @@ weakness-grid .type-badge {
     gap: 20px;
     flex-wrap: wrap;
     padding: 25px 15px;
-
 }
 
 

@@ -249,13 +249,13 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                     {/*-- ID --*/}
                     <span className="pokemon-id-bg"
                         style={{
-                            background: `linear-gradient(to bottom, ${typeColor}22 15%, transparent 90%)`,
+                            background: `linear-gradient(to bottom, ${typeColor}22 35%, transparent 90%)`,
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
                     >#{formattedId}</span>
 
-                    {/*-- NOME E CRY --*/}
+                    {/*-- NOME, CRY e IMAGE --*/}
                     <div className="identity-content"> 
                         <div className="name-row">
                             <h1>{pokemon.name}</h1>
@@ -329,7 +329,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                         </div>
                 </div>
 
-                {/* STATUS */}
+                {/* STATUS e EVO Container */}
                 <div className="details-column stats-evolution-column">
 
                     {/*-- EVOLUÇÃO -- */}
