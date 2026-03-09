@@ -101,7 +101,6 @@ const navigateToPokemon = (newId: number) => {
 function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
     const { name } = useParams<{ name: string }>();
     const navigate = useNavigate();
-
     const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
     const [isLegacy, setIsLegacy] = useState(false);
     const [evolutions, setEvolutions] = useState<{ name: string, id: string }[]>([]);
@@ -150,6 +149,12 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
         return () => { isMounted = false; };
     }, [name]);
 
+    //Aplicação tags para DarkMode
+    useEffect(() => {
+        // Isso aplica o atributo no <html> ou <body> para o CSS ler
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    }, [isDarkMode]);
+
     //Verificações de Renderização
     if (loading) return <DetailsSkeleton isDarkMode={isDarkMode} />;
     if (!pokemon) return <div className="loading-screen">Pokémon não encontrado</div>;
@@ -158,10 +163,6 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
     const currentId = pokemon?.id;
     const typeColor = getTypeColor(pokemon.types[0].type.name);  
     const formattedId = String(currentId).padStart(3, '0');
-
-
-
-
 
     const getPokemonImage = () => {
         if (isLegacy) {
@@ -174,6 +175,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
         const animated = pokemon.sprites.versions?.['generation-v']?.['black-white']?.animated;
         return (isShiny ? animated?.front_shiny : animated?.front_default) || pokemon.sprites.other?.['official-artwork']?.front_default;
     }
+
     const handleToggleShiny = () => {
         const nextShiny = !isShiny;
         setIsShiny(nextShiny);
@@ -214,8 +216,6 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
         localStorage.setItem("pokedex_favorites", JSON.stringify(favorites));
     };
 
-  
-
 
     //Favoritos
     //useEffect(() => {
@@ -223,15 +223,14 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
     //    setIsFavorite(favorites.includes(name));
     //}, [name])
 
-
-
-
     return (
         <div className="details-page-wrapper">
+
             <div className="details-card">
 
                 {/* COLUNA 1: IDENTIDADE */}
                 <div className="details-column identity-column">
+
                     {/*-- BOTÕES --*/}
                     <div className="buttons-container">
                         <button
@@ -249,10 +248,8 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                     {/*-- ID --*/}
                     <span className="pokemon-id-bg"
                         style={{
-                            background: `linear-gradient(to bottom, ${typeColor}22 35%, transparent 90%)`,
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                        }}
+                            "--poke-color": typeColor
+                        } as React.CSSProperties}
                     >#{formattedId}</span>
 
                     {/*-- NOME, CRY e IMAGE --*/}

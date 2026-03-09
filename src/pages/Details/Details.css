@@ -1,26 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 
-/*:root {*/
-    /* Fundo do Card - Modo Claro (Padrão) */
-    /*--card-bg-inner: #ffffff;*/ /* Branco puro no foco */
-    /*--card-bg-outer: #f2f2f7;*/ /* Cinza "iOS" bem suave nas bordas */
-    /* Textos e Elementos */
-    /*--text-main: #1c1c1e;*/ /* Quase preto para leitura perfeita */
-    /*--text-secondary: rgba(0, 0, 0, 0.6);
-    --glass-border: rgba(0, 0, 0, 0.08);*/ /* Borda sutil escura */
-    /*--shadow-color: rgba(0, 0, 0, 0.1);
+:root { /*Tema Padrão Branco*/
+    --text-primary: "1a1a1a";
+    --text-secondary: #555555;
+    --card-bg: radial-gradient(circle at top left, #ffffff, #f2f2f7);
+    --glass-border: rgba(0, 0, 0, 0.1);
 }
 
-[data-theme='dark'] {
-    --card-bg-inner: #1a1a1a;
-    --card-bg-outer: #050505;
-    --text-main: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
+[data-theme='dark'] { /*Tema Dark*/
+    --text-primary: #ffffff; 
+    --text-secondary: #b0b0b0; 
+    --card-bg: radial-gradient(circle at top left, #1a1a1a, #050505);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.5);
-}*/
 
-
+}
 
 .details-page-wrapper {
     position: fixed;
@@ -50,6 +43,8 @@
     padding: 30px;
     box-sizing: border-box;
     overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
 }
 
 /*Identidade */
@@ -80,32 +75,39 @@
 /*-- ID -- */
 .pokemon-id-bg {
     position: absolute;
-    top: 50px;
+    top: 22px;
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Michroma', sans-serif;
-    font-size: 8rem;
+    font-size: 8.7rem;
     font-weight: 900;
-    letter-spacing: -5px;
-    color: rgba(255, 255, 255, 0.07);
+    letter-spacing: -6px;
     pointer-events: none;
     z-index: 0;
     line-height: 1;
-    background: linear-gradient( to bottom, rgba(255, 255, 255, 0.12)20%, rgba(255, 255, 255, 0)90% );
+    transition: all 0.5s ease;
+    background-image: linear-gradient( to bottom, var(--poke-color) 0%, var(--poke-color) 60%, rgba(0, 0, 0, 0) 100% );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    opacity: 0.3;
+}
+:root .pokemon-id-bg {
+    opacity: 0.5;
+    background-image: linear-gradient( to bottom, var(--poke-color) 0%, var(--poke-color) 70%, transparent 100% );
 }
 
 /*-- IMG --*/
 .pokemon-image {
-    width: 230px;
-    height: 230px;
+    width: 250px;
+    height: 250px;
     object-fit: contain;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     filter: drop-shadow(0 3px 9px rgba(0,0,0,0.4));
-    transition: transform 1s cubic-bezier(0.1, 0.2, 0.1, 0.1);
-    margin-bottom: 25px;
+    margin-bottom: 2px;
+    margin-top: -10px;
 }
     .pokemon-image.legacy-pixel {
         image-rendering: pixelated;
@@ -117,21 +119,22 @@
 
 /*-- NOME POKE --*/
 .name-row {
-    margin-bottom: 10px;
+    margin-top: -25px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
-.name-row h1 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 3rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 0;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 2;
-}
+    .name-row h1 {
+        font-family: 'Michroma', sans-serif;
+        font-size: 3.3rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 2;
+        color: var(--text-primary);
+        opacity: 0.8;
+    }
 .cry-button {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -159,11 +162,11 @@
 /*-- Botão Shiny e Legacy --*/
 .buttons-container {
     position: absolute;
-    top: 0px;
+    top: -8px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    gap: 20px;
     z-index: 100;
 }
 .toggle-btn {
@@ -193,34 +196,38 @@
 
 /*-- Altura e Peso --*/
 .dimensions-row {
-    margin-top: 25px; 
+    margin-top: 18px;
     margin-bottom: 15px;
     display: flex;
     justify-content: center;
-    gap: 40px; 
-    padding: 0; 
-    background: transparent; 
-    backdrop-filter: none; 
+    gap: 40px;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
 }
 .dimension-item {
     display: flex;
-    flex-direction: row; /* Mudado para linha para ocupar menos espaço vertical */
+    flex-direction: row;
     align-items: baseline;
-    gap: 8px; /* Espaço entre a palavra 'Altura' e o valor '1.0m' */
-    opacity: 0.8; /* Deixa o conjunto levemente mais discreto */
+    gap: 7px; 
+    opacity: 0.8;
 }
+    .dimension-item .span {
+        color: var(--text-primary);
+    }
     .dimension-item .label {
-        font-size: 0.65rem; /* Fonte ainda menor */
+        font-size: 0.5rem;
         text-transform: uppercase;
         letter-spacing: 1px;
-        color: rgba(255, 255, 255, 0.5); /* Cinza suave */
-        font-family: 'Rajdhani', sans-serif;
+        color: rgba(255, 255, 255, 0.5);
+        font-family: 'Michroma', sans-serif;
+        color: var(--text-primary);
     }
     .dimension-item .value {
-        font-size: 1.1rem; /* Valor menor para não gritar no layout */
+        font-size: 0.8rem;
         font-weight: 700;
         color: #fff;
-        font-family: 'Rajdhani', sans-serif;
+        font-family: 'Michroma', sans-serif;
     }
 
 /*-- TIPOS -- */
@@ -229,9 +236,9 @@
     font-size: 1.40rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 9px;
     text-align: center;
+    color: var(--text-primary);
 }
 .types-row{
     display: flex;
@@ -272,9 +279,9 @@
         font-size: 1.20rem;
         text-transform: uppercase;
         letter-spacing: 2px;
-        color: rgba(255, 255, 255, 0.7);
         margin-bottom: 15px;
         text-align: center;
+        color: var(--text-primary);
     }
 
 .weakness-grid {
@@ -362,20 +369,21 @@ weakness-grid .type-badge {
     background: transparent;
     padding: 10px 0;
 }
-    .stats-container-wrapper h3 {
-        text-align: center;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.2rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 20px;
-        color: rgba(255, 255, 255, 0.9);
-        border-bottom: 2px solid #ffcb05;
-        display: inline-block; 
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
+.stats-container-wrapper h3 {
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    border-bottom: 2px solid #ffcb05;
+    display: inline-block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--text-primary);
+}
 
 /*-- barra de status --*/
 .stat-item {
@@ -390,6 +398,7 @@ weakness-grid .type-badge {
     font-weight: bold;
     text-transform: uppercase;
     font-family: 'Rajdhani', sans-serif;
+    color: var(--text-primary);
 }
 .stat-bar-container {
     width: 100%;
@@ -450,6 +459,7 @@ weakness-grid .type-badge {
         width: auto;
         margin-left: auto;
         margin-right: auto;
+        color: var(--text-primary);
     }
 
 .evolution-display-horizontal {
@@ -471,6 +481,7 @@ weakness-grid .type-badge {
     cursor: pointer;
     transition: transform 0.3s ease;
     min-width: 80px;
+    color: var(--text-primary);
 }
     .evo-item:hover {
         transform: translateY(-5px);
