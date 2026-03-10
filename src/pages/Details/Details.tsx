@@ -106,6 +106,7 @@ function Details({ isDarkMode ,isShiny, setIsShiny }: DetailsProps) {
     const [evolutions, setEvolutions] = useState<{ name: string, id: string }[]>([]);
     const [weaknesses, setWeaknesses] = useState<{ [key: string]: number }>({});
     const [loading, setLoading] = useState(true);
+    const [isChanging, setIsChanging] = useState(false);
 
     //API
     useEffect(() => {
@@ -153,6 +154,13 @@ function Details({ isDarkMode ,isShiny, setIsShiny }: DetailsProps) {
         document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 
+    // Toda vez que mudar entre Legacy ou Shiny, ativa um efeito visual rápido
+    useEffect(() => {
+        setIsChanging(true);
+        const timer = setTimeout(() => setIsChanging(false), 150); // 150ms é imperceptível mas limpa o glitch
+        return () => clearTimeout(timer);
+    }, [isLegacy, isShiny]);
+
     //Verificações de Renderização
     if (loading) return <DetailsSkeleton isDarkMode={isDarkMode} />;
     if (!pokemon) return <div className="loading-screen">Pokémon não encontrado</div>;
@@ -161,6 +169,9 @@ function Details({ isDarkMode ,isShiny, setIsShiny }: DetailsProps) {
     const currentId = pokemon?.id;
     const typeColor = getTypeColor(pokemon.types[0].type.name);  
     const formattedId = String(currentId).padStart(3, '0');
+    const imageClass = `pokemon-image 
+    ${isLegacy ? 'legacy-pixel' : ''} 
+    ${isChanging ? 'loading' : ''}`;
 
     const getPokemonImage = () => {
         if (isLegacy) {
@@ -258,12 +269,14 @@ function Details({ isDarkMode ,isShiny, setIsShiny }: DetailsProps) {
                                 🔊
                             </button>
                         </div>
-                        <img
-                            className="pokemon-image"
-                            src={getPokemonImage()}
-                            alt={pokemon.name}
-                        />
-
+                        <div className="pokemon-image-container">
+                            <img
+                                className={imageClass}
+                                src={getPokemonImage()}
+                                alt={pokemon.name}
+                                key={`${pokemon.id}-${isLegacy}-${isShiny}`}
+                            />
+                        </div>
                     </div>
 
                     {/*-- ALTURA E PESO --*/}

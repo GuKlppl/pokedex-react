@@ -122,22 +122,36 @@
 }
 
 /*-- IMG --*/
+.pokemon-image-container {
+    width: 100%;
+    height: 255px; /* Escolha uma altura que caiba a maior imagem + o scale */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible; /* Importante para o scale(2.8) não ser cortado */
+}
 .pokemon-image {
     width: 250px;
     height: 250px;
+    display: block;
     object-fit: contain;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
-    filter: drop-shadow(0 3px 9px rgba(0,0,0,0.4));
-    margin-bottom: 2px;
-    margin-top: -10px;
+    filter: drop-shadow(0 4px 2px rgba(0,0,0,0.4));
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    margin: 0 auto;
+    opacity: 1;
 }
+    .pokemon-image.loading {
+        opacity: 0.7;
+    }
     .pokemon-image.legacy-pixel {
+        width: 150px;
         image-rendering: pixelated;
-        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
         transform: scale(2.8);
-        margin: 40px 0;
-        filter: drop-shadow(5px 5px 0 rgba(0,0,0,,0.2));
+        filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.1));
     }
 
 /*-- NOME POKE --*/
