@@ -98,7 +98,7 @@ const navigateToPokemon = (newId: number) => {
         }
     }
 
-function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
+function Details({ isDarkMode ,isShiny, setIsShiny }: DetailsProps) {
     const { name } = useParams<{ name: string }>();
     const navigate = useNavigate();
     const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
@@ -106,7 +106,6 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
     const [evolutions, setEvolutions] = useState<{ name: string, id: string }[]>([]);
     const [weaknesses, setWeaknesses] = useState<{ [key: string]: number }>({});
     const [loading, setLoading] = useState(true);
-    const [isFavorite, setIsFavorite] = useState(false);
 
     //API
     useEffect(() => {
@@ -151,7 +150,6 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
 
     //Aplicação tags para DarkMode
     useEffect(() => {
-        // Isso aplica o atributo no <html> ou <body> para o CSS ler
         document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 
@@ -353,7 +351,7 @@ function Details({ isDarkMode, isShiny, setIsShiny }: DetailsProps) {
                     {/*-- STATUS --*/}
 
                     <div className="stats-container-wrapper">
-                        <h3>Base Stats</h3>
+                        <h3>Status Base</h3>
                         {pokemon.stats.map((s: any) => (
                             <div key={s.stat.name} className="stat-item">
                                 <div className="stat-info">

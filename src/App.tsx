@@ -81,7 +81,7 @@ function App() {
                 <div className="header-center-content">
                     <h1 className="header-title" onClick={handleLogoClick}>
                         <span style={{ color: '#ffffff' }}>Poké</span>
-                        <span style={{ color: '#ffcb05' }}>Dex</span>
+                        <span style={{ color: isDarkMode ? "#393053" : '#ffcb05' }}>Dex</span>
                     </h1>
 
                     <div className="search-container-header">
@@ -94,7 +94,7 @@ function App() {
                                 padding: '10px 15px',
                                 borderRadius: '25px',
                                 border: 'none',
-                                backgroundColor: isDarkMode ? '#2a2a2a' : '#ffffff',
+                                backgroundColor: isDarkMode ? '#393053' : '#ffffff',
                                 color: isDarkMode ? '#fff' : '#333',
                                 width: '250px',
                                 outline: 'none',

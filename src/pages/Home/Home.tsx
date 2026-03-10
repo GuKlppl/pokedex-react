@@ -198,8 +198,6 @@ function Home({ isDarkMode, isShiny, searchTerm }: HomeProps) {
                             key={pokemon.name}
                             name={pokemon.name}
                             url={pokemon.url}
-                            isDarkMode={isDarkMode}
-                            isShiny={isShiny}
                         />
                     ))
                 )};

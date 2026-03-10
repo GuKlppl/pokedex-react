@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -36,7 +37,7 @@ body {
 }
 
 .header-title {
-    font-family: 'Arial Black', sans-serif;
+    font-family: 'Michroma', sans-serif;
     font-size: 2rem;
     font-weight: 900;
     color: white;
@@ -144,16 +145,13 @@ input:focus {
 
 .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: rotate(15deg) scale(1.1); /* Dá uma leve giradinha charmosa */
+  transform: rotate(15deg) scale(1.1);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
-
 /* Efeito ao clicar */
 .theme-toggle-btn:active {
   transform: scale(0.9);
 }
-
-/* Ajuste para o Dark Mode (Opcional, se quiser mudar a cor do botão no escuro) */
 .dark .theme-toggle-btn {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
